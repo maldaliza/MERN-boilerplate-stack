@@ -31,6 +31,11 @@ app.get('/', (request, response) => {
     response.send('안녕하세요!');
 });
 
+app.get('/api/hello', (request, response) => {
+    response.send("Hello ~~~");
+});
+
+
 // 회원가입 라우터
 app.post('/api/users/register', (request, response) => {
     /*
@@ -103,6 +108,10 @@ app.get('/api/users/auth', auth, (request, response) => {
 
 // 로그아웃 라우터
 app.get('/api/users/logout', auth, (request, response) => {
+    /*
+        로그아웃하려는 유저를 DB에서 찾아서
+        그 유저의 토큰을 지워준다.
+    */
     User.findOneAndUpdate({ _id: request.user._id }, { token: "" }, (err, user) => {
         if(err) return response.json({ success: false, err });
         return response.status(200).send({
